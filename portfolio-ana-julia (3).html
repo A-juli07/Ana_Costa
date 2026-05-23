@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ana Julia — Dev Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&f[]=cabinet-grotesk@400,500,700,800,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --coral:   #FF4D6D;
+  --orange:  #FF7043;
+  --yellow:  #FFBE0B;
+  --lime:    #C8F135;
+  --mint:    #00F5C4;
+  --sky:     #3BCEFC;
+  --violet:  #7B2FBE;
+  --plum:    #C2185B;
+  --cream:   #F5ECD7;
+  --dark:    #080709;
+  --dark2:   #110E12;
+  --dark3:   #1C1720;
+  --text-light: #EDE0CC;
+  --accent1: var(--coral);
+  --accent2: var(--lime);
+  --accent3: var(--sky);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--text-light);
+  font-family: 'Cabinet Grotesk', sans-serif;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--yellow);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, background 0.2s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 2px solid var(--coral);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: left 0.12s ease, top 0.12s ease, transform 0.3s ease;
+  mix-blend-mode: difference;
+}
+body:hover .cursor { transform: scale(1); }
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.4;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 60px;
+  background: linear-gradient(to bottom, rgba(8,7,9,0.97) 0%, transparent 100%);
+  backdrop-filter: blur(8px);
+}
+@media (max-width: 700px) {
+  nav { padding: 20px 24px; }
+  .nav-links { gap: 20px; }
+  .nav-links a { font-size: 11px; letter-spacing: 1px; }
+}
+.nav-logo {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0px;
+  background: linear-gradient(135deg, var(--coral), var(--yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; gap: 40px; }
+.nav-links a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: opacity 0.3s, color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: var(--yellow);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { opacity: 1; }
+.nav-links a:hover::after { width: 100%; }
+
+/* ===================== HERO ===================== */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 120px 60px 80px;
+  gap: 40px;
+}
+@media (max-width: 900px) {
+  #hero { grid-template-columns: 1fr; padding: 130px 28px 80px; gap: 32px; }
+  .scroll-hint { left: 28px; }
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 75% 35%, rgba(123,47,190,0.45) 0%, transparent 65%),
+    radial-gradient(ellipse 45% 40% at 15% 75%, rgba(255,77,109,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 50% 10%, rgba(0,245,196,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 30% at 90% 90%, rgba(255,190,11,0.1) 0%, transparent 50%),
+    var(--dark);
+}
+
+/* Floating orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: floatOrb 8s ease-in-out infinite;
+  pointer-events: none;
+}
+.orb1 { width: 500px; height: 500px; background: rgba(123,47,190,0.2); top: -150px; right: 5%; animation-delay: 0s; }
+.orb2 { width: 350px; height: 350px; background: rgba(0,245,196,0.1); bottom: 5%; left: 0%; animation-delay: -3s; }
+.orb3 { width: 280px; height: 280px; background: rgba(255,77,109,0.12); top: 35%; right: 25%; animation-delay: -5s; }
+.orb4 { width: 200px; height: 200px; background: rgba(255,190,11,0.08); bottom: 20%; right: 8%; animation-delay: -2s; }
+
+@keyframes floatOrb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,209,102,0.12);
+  border: 1px solid rgba(255,209,102,0.3);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--yellow);
+  margin-bottom: 32px;
+  animation: fadeSlideUp 0.8s ease both;
+}
+.hero-tag-dot {
+  width: 8px; height: 8px;
+  background: var(--mint);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+.hero-name {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(64px, 10vw, 140px);
+  font-weight: 700;
+  line-height: 0.88;
+  letter-spacing: -3px;
+  margin-bottom: 12px;
+  animation: fadeSlideUp 0.8s ease 0.15s both;
+}
+.hero-name .line1 {
+  display: block;
+  background: linear-gradient(135deg, #fff 30%, rgba(255,255,255,0.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-name .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--coral), var(--orange), var(--yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-family: 'DM Mono', monospace;
+  font-size: 15px;
+  color: rgba(240,230,211,0.55);
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+  animation: fadeSlideUp 0.8s ease 0.3s both;
+}
+.hero-sub span { color: var(--mint); }
+
+.hero-cta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  animation: fadeSlideUp 0.8s ease 0.45s both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, var(--coral) 0%, var(--violet) 100%);
+  color: white;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 32px rgba(255,107,107,0.35);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 48px rgba(255,107,107,0.5); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid rgba(255,255,255,0.2);
+  color: white;
+  text-decoration: none;
+  padding: 14px 30px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+.btn-outline:hover { border-color: var(--yellow); color: var(--yellow); transform: translateY(-3px); }
+
+/* Floating code snippet */
+.hero-code-float {
+  position: relative;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 28px 32px;
+  backdrop-filter: blur(24px);
+  width: 100%;
+  max-width: 480px;
+  justify-self: end;
+  animation: fadeSlideUp 1s ease 0.6s both, floatCode 6s ease-in-out 1.6s infinite;
+  font-family: 'DM Mono', monospace;
+  font-size: 13.5px;
+  line-height: 1.9;
+  z-index: 2;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+}
+@media (max-width: 900px) {
+  .hero-code-float { max-width: 100%; justify-self: start; font-size: 12px; padding: 22px 24px; }
+}
+@keyframes floatCode {
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-10px) rotate(0.4deg)}
+}
+.code-line { color: rgba(240,230,211,0.4); }
+.code-keyword { color: var(--coral); }
+.code-string { color: var(--lime); }
+.code-func { color: var(--sky); }
+.code-comment { color: rgba(240,230,211,0.25); font-style: italic; }
+.code-dot { display: flex; gap: 6px; margin-bottom: 16px; }
+.code-dot span { width: 10px; height: 10px; border-radius: 50%; }
+.code-dot span:nth-child(1){background:#FF5F57}
+.code-dot span:nth-child(2){background:#FEBC2E}
+.code-dot span:nth-child(3){background:#28C840}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 60px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.4;
+  animation: fadeSlideUp 1s ease 1s both;
+}
+.scroll-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(to right, var(--coral), transparent);
+  animation: scrollLine 2s ease-in-out infinite;
+}
+@keyframes scrollLine { 0%,100%{width:40px} 50%{width:80px} }
+
+/* ===================== ABOUT ===================== */
+#about {
+  padding: 120px 60px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, transparent, rgba(59,206,252,0.025), transparent);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--mint);
+  margin-bottom: 20px;
+}
+.section-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(48px, 6vw, 84px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+}
+.section-title em { font-style: italic; color: var(--coral); font-family: 'Instrument Serif', serif; font-weight: 700; font-size: 0.65em; vertical-align: middle; }
+
+.about-text p {
+  font-size: 17px;
+  line-height: 1.8;
+  color: rgba(240,230,211,0.65);
+  margin-bottom: 20px;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 40px;
+}
+.stat-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 24px;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.stat-card:hover { transform: translateY(-4px); border-color: rgba(255,107,107,0.4); }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--coral), var(--yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+}
+.stat-label { font-size: 12px; color: rgba(240,230,211,0.4); letter-spacing: 1px; margin-top: 6px; }
+
+.about-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Vinyl record big decoration */
+.vinyl-deco {
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #1a1118 0deg 10deg,
+    #2a1f2a 10deg 20deg,
+    #1a1118 20deg 30deg,
+    #221822 30deg 40deg,
+    #1a1118 40deg 360deg
+  );
+  position: relative;
+  animation: vinylSpin 20s linear infinite;
+  box-shadow: 0 0 80px rgba(123,47,190,0.4), 0 0 160px rgba(255,77,109,0.15), 0 0 240px rgba(0,245,196,0.05);
+}
+.vinyl-deco::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #0d0a0b 0deg 5deg,
+    #1e1520 5deg 15deg,
+    #0d0a0b 15deg 25deg,
+    #171215 25deg 35deg,
+    #0d0a0b 35deg 360deg
+  );
+}
+.vinyl-deco::after {
+  content: 'AJ';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px; height: 80px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, var(--coral), var(--violet));
+  border-radius: 50%;
+  font-family: 'Clash Display', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: white;
+}
+@keyframes vinylSpin { to { transform: rotate(360deg); } }
+
+.vinyl-rings {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,107,107,0.1);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+.vinyl-rings:nth-child(2) { inset: -80px; animation-delay: 0.5s; border-color: rgba(6,214,160,0.07); }
+.vinyl-rings:nth-child(3) { inset: -120px; animation-delay: 1s; border-color: rgba(255,209,102,0.05); }
+@keyframes ringPulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.03)} }
+
+/* ===================== TECH STACK ===================== */
+#stack {
+  padding: 120px 60px;
+  background: linear-gradient(180deg, transparent, rgba(123,47,190,0.07), rgba(0,245,196,0.03), transparent);
+}
+.stack-header { text-align: center; max-width: 600px; margin: 0 auto 80px; }
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tech-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  padding: 32px 24px;
+  text-align: center;
+  cursor: none;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+.tech-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.4s;
+  border-radius: inherit;
+}
+.tech-card:hover { transform: translateY(-8px) scale(1.03); border-color: transparent; }
+.tech-card:hover::before { opacity: 1; }
+
+.tc-django::before  { background: linear-gradient(135deg,rgba(6,214,160,0.15),rgba(6,214,160,0.05)); }
+.tc-python::before  { background: linear-gradient(135deg,rgba(255,209,102,0.15),rgba(255,140,66,0.05)); }
+.tc-angular::before { background: linear-gradient(135deg,rgba(255,107,107,0.15),rgba(155,45,119,0.05)); }
+.tc-js::before      { background: linear-gradient(135deg,rgba(255,209,102,0.15),rgba(255,209,102,0.03)); }
+.tc-ts::before      { background: linear-gradient(135deg,rgba(17,138,178,0.2),rgba(17,138,178,0.05)); }
+.tc-rest::before    { background: linear-gradient(135deg,rgba(6,214,160,0.12),rgba(17,138,178,0.05)); }
+.tc-git::before     { background: linear-gradient(135deg,rgba(255,107,107,0.15),rgba(255,107,107,0.03)); }
+.tc-docker::before  { background: linear-gradient(135deg,rgba(17,138,178,0.2),rgba(6,214,160,0.05)); }
+.tc-pg::before      { background: linear-gradient(135deg,rgba(17,138,178,0.15),rgba(17,138,178,0.03)); }
+.tc-linux::before   { background: linear-gradient(135deg,rgba(255,209,102,0.12),rgba(255,107,107,0.05)); }
+
+.tech-icon {
+  font-size: 42px;
+  margin-bottom: 14px;
+  display: block;
+  transition: transform 0.4s ease;
+  position: relative;
+  z-index: 1;
+}
+.tech-card:hover .tech-icon { transform: scale(1.2) rotate(-5deg); }
+
+.tech-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+.tech-type {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(240,230,211,0.35);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+/* Progress bars */
+.tech-bar {
+  margin-top: 14px;
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.tech-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 0;
+}
+.tech-card.animated .tech-bar-fill { width: var(--level); }
+
+/* ===================== MUSIC SECTION ===================== */
+#music {
+  padding: 120px 60px;
+  position: relative;
+}
+
+.music-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 70% at 50% 50%, rgba(194,24,91,0.12) 0%, rgba(123,47,190,0.06) 60%, transparent 80%);
+  pointer-events: none;
+}
+
+.music-header { max-width: 700px; margin-bottom: 64px; }
+.music-header .section-title { margin-bottom: 12px; }
+.music-header p { font-size: 13px; color: rgba(240,230,211,0.35); font-family: 'DM Mono', monospace; letter-spacing: 1px; }
+
+/* ---- Andregs-style album list ---- */
+.album-list {
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.album-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.3s;
+  overflow: hidden;
+  min-height: 96px;
+}
+.album-row:hover { background: rgba(255,255,255,0.025); }
+.album-row.active { background: rgba(255,255,255,0.04); }
+
+/* Vinyl + cover — the andregs magic */
+.album-vinyl-wrap {
+  position: relative;
+  width: 110px;
+  height: 96px;
+  flex-shrink: 0;
+}
+
+.album-cover-sq {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 5px;
+  z-index: 2;
+  overflow: hidden;
+  transition: transform 0.55s cubic-bezier(0.34,1.15,0.64,1);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.55);
+}
+
+.cover-art {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 7px;
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+}
+
+.album-disc {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  z-index: 1;
+}
+.album-disc-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%, #181818 0%, #181818 18%, transparent 18%),
+    conic-gradient(
+      #111 0deg, #2a2a2a 4deg, #111 8deg, #222 12deg, #111 16deg,
+      #2a2a2a 20deg, #111 24deg, #222 28deg, #111 360deg
+    );
+  position: relative;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.75);
+}
+.album-disc-inner::before {
+  content: '';
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(255,107,107,0.5), rgba(255,209,102,0.5), rgba(6,214,160,0.5),
+    rgba(17,138,178,0.5), rgba(155,45,119,0.5), rgba(255,107,107,0.5)
+  );
+  mix-blend-mode: overlay;
+  opacity: 0.8;
+}
+.album-disc-inner::after {
+  content: '';
+  position: absolute;
+  inset: 40%;
+  border-radius: 50%;
+  background: #181818;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.07);
+}
+
+/* Active: cover slides RIGHT, disc peeks out left */
+.album-row.active .album-cover-sq {
+  transform: translateY(-50%) translateX(36px);
+}
+.album-row.active .album-disc {
+  animation: discSpinRow 2s linear infinite;
+}
+@keyframes discSpinRow { to { transform: translateY(-50%) rotate(360deg); } }
+
+/* Row info */
+.album-info {
+  flex: 1;
+  padding: 20px 16px 20px 0;
+  margin-left: 118px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.album-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 28px;
+  letter-spacing: -0.3px;
+  color: var(--text-light);
+  transition: color 0.3s;
+  line-height: 1;
+}
+.album-row.active .album-title { color: var(--coral); }
+.album-artist {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(240,230,211,0.35);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+.album-genre {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: rgba(240,230,211,0.18);
+  letter-spacing: 1px;
+  margin-top: 3px;
+}
+
+/* Right: waveform / play icon */
+.album-right {
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.album-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: rgba(240,230,211,0.18);
+  letter-spacing: 2px;
+  width: 28px;
+  text-align: right;
+}
+.album-waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+  opacity: 0;
+  transition: opacity 0.4s;
+  width: 36px;
+}
+.album-row.active .album-waveform { opacity: 1; }
+.aw-bar {
+  width: 3px;
+  background: linear-gradient(to top, var(--coral), var(--yellow));
+  border-radius: 2px;
+  animation: awAnim 0.85s ease-in-out infinite;
+}
+.aw-bar:nth-child(1){animation-delay:0s}
+.aw-bar:nth-child(2){animation-delay:0.14s}
+.aw-bar:nth-child(3){animation-delay:0.28s}
+.aw-bar:nth-child(4){animation-delay:0.42s}
+.aw-bar:nth-child(5){animation-delay:0.56s}
+@keyframes awAnim { 0%,100%{height:3px} 50%{height:18px} }
+
+.play-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.13);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  color: rgba(240,230,211,0.4);
+  transition: all 0.3s;
+  flex-shrink: 0;
+}
+.album-row:hover .play-icon { border-color: var(--coral); color: var(--coral); }
+.album-row.active .play-icon { background: var(--coral); border-color: var(--coral); color: white; }
+
+/* ===================== PROJECTS ===================== */
+#projects {
+  padding: 120px 60px;
+  background: linear-gradient(180deg, transparent, rgba(59,206,252,0.04), rgba(200,241,53,0.02), transparent);
+}
+.projects-header { max-width: 600px; margin-bottom: 80px; }
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  max-width: 1200px;
+}
+
+.project-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 24px;
+  padding: 40px;
+  cursor: none;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 24px 24px 0 0;
+  transition: opacity 0.4s;
+  opacity: 0;
+}
+.proj-1::before { background: linear-gradient(90deg, var(--mint), var(--sky)); }
+
+.proj-2::before { background: linear-gradient(90deg, var(--coral), var(--plum)); }
+.proj-3::before { background: linear-gradient(90deg, var(--yellow), var(--orange)); }
+.proj-4::before { background: linear-gradient(90deg, var(--plum), var(--coral)); }
+
+.project-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,0.15); }
+.project-card:hover::before { opacity: 1; }
+
+.proj-icon {
+  font-size: 36px;
+  margin-bottom: 20px;
+  display: block;
+}
+.proj-title {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+.proj-desc {
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(240,230,211,0.5);
+  margin-bottom: 24px;
+}
+.proj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.proj-tag {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+  background: rgba(255,255,255,0.06);
+  color: rgba(240,230,211,0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ===================== CONTACT ===================== */
+#contact {
+  padding: 120px 60px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.contact-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(255,77,109,0.14) 0%, rgba(123,47,190,0.08) 50%, transparent 80%);
+}
+.contact-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+
+.contact-big {
+  font-family: 'Clash Display', sans-serif;
+  font-size: clamp(60px, 9vw, 120px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #fff, rgba(255,255,255,0.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.contact-big em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--coral), var(--yellow));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.contact-sub {
+  font-size: 17px;
+  color: rgba(240,230,211,0.5);
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 100px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+}
+.cl-github { background: rgba(255,255,255,0.07); color: var(--text-light); border: 1px solid rgba(255,255,255,0.1); }
+.cl-linkedin { background: rgba(17,138,178,0.2); color: #56b3d4; border: 1px solid rgba(17,138,178,0.3); }
+.cl-email { background: linear-gradient(135deg, var(--coral), var(--plum)); color: white; }
+.contact-link:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
+
+/* Footer */
+footer {
+  padding: 40px 60px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer p { font-family: 'DM Mono', monospace; font-size: 12px; color: rgba(240,230,211,0.25); letter-spacing: 1px; }
+.footer-heart { color: var(--coral); }
+
+/* Audio bars animated bg */
+.audio-bg-bars {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 80px;
+  padding: 0 20px;
+  pointer-events: none;
+  z-index: 500;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.audio-bg-bars.active { opacity: 1; }
+.abbar {
+  flex: 1;
+  max-width: 6px;
+  background: linear-gradient(to top, var(--coral), transparent);
+  border-radius: 2px 2px 0 0;
+  animation: abbarAnim 0.8s ease-in-out infinite;
+}
+@keyframes abbarAnim {
+  0%,100%{height:4px} 50%{height:var(--h)}
+}
+
+/* Now playing bar */
+.now-playing {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(13,10,11,0.9);
+  border: 1px solid rgba(255,77,109,0.35);
+  backdrop-filter: blur(20px);
+  border-radius: 100px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 600;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.now-playing.visible { transform: translateX(-50%) translateY(0); }
+.np-disc {
+  width: 36px; height: 36px;
+  background: conic-gradient(#888, #ccc, #888, #eee, #888);
+  border-radius: 50%;
+  animation: cdSpin 2s linear infinite;
+  flex-shrink: 0;
+}
+.np-text { line-height: 1.3; }
+.np-title { font-size: 13px; font-weight: 700; }
+.np-sub { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(240,230,211,0.4); }
+.np-stop {
+  width: 28px; height: 28px;
+  background: rgba(255,107,107,0.15);
+  border: 1px solid rgba(255,107,107,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.np-stop:hover { background: rgba(255,107,107,0.35); }
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  #about, #stack, #music, #projects, #contact { padding: 80px 28px; }
+  .about-grid { grid-template-columns: 1fr; gap: 48px; }
+  .about-visual { display: none; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .music-header { margin-bottom: 40px; }
+  .album-title { font-size: 22px; }
+  .album-info { margin-left: 100px; }
+  footer { flex-direction: column; gap: 8px; padding: 32px 28px; }
+}
+@media (max-width: 600px) {
+  .tech-grid { grid-template-columns: repeat(2, 1fr); }
+  .album-right { padding: 16px 16px; gap: 10px; }
+  .hero-cta { gap: 12px; }
+  .btn-primary, .btn-outline { padding: 13px 22px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Now Playing Bar -->
+<div class="now-playing" id="nowPlaying">
+  <div class="np-disc"></div>
+  <div class="np-text">
+    <div class="np-title" id="npTitle">—</div>
+    <div class="np-sub">tocando agora ♪</div>
+  </div>
+  <div class="np-stop" id="npStop">■</div>
+</div>
+
+<!-- Audio bottom bars -->
+<div class="audio-bg-bars" id="audioBars"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Ana Julia</div>
+  <div class="nav-links">
+    <a href="#about">Sobre</a>
+    <a href="#stack">Stack</a>
+    <a href="#music">Música</a>
+    <a href="#projects">Projetos</a>
+    <a href="#contact">Contato</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span class="hero-tag-dot"></span>
+      Disponível para projetos
+    </div>
+    <h1 class="hero-name">
+      <span class="line1">Ana Julia</span>
+      <span class="line2">Desenvolvedora</span>
+    </h1>
+    <p class="hero-sub">Backend Engineer · <span>Python</span> · <span>Django</span> · <span>Angular</span></p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">Ver Projetos →</a>
+      <a href="#contact" class="btn-outline">Entre em Contato</a>
+    </div>
+  </div>
+
+  <div class="hero-code-float">
+    <div class="code-dot"><span></span><span></span><span></span></div>
+    <div><span class="code-keyword">from</span> <span class="code-func">django.db</span> <span class="code-keyword">import</span> models</div>
+    <div class="code-line">&nbsp;</div>
+    <div><span class="code-keyword">class</span> <span class="code-func">Developer</span>(models.Model):</div>
+    <div>&nbsp;&nbsp;name = <span class="code-string">"Ana Julia"</span></div>
+    <div>&nbsp;&nbsp;role = <span class="code-string">"Backend Dev"</span></div>
+    <div>&nbsp;&nbsp;coffee = models.<span class="code-func">IntegerField</span>(</div>
+    <div>&nbsp;&nbsp;&nbsp;&nbsp;default=<span class="code-string">∞</span></div>
+    <div>&nbsp;&nbsp;)</div>
+    <div class="code-line">&nbsp;</div>
+    <div class="code-comment">&nbsp;&nbsp;# always shipping 🚀</div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="section-label">// sobre mim</div>
+      <h2 class="section-title">Código com<br><em>alma criativa</em></h2>
+      <p>Desenvolvedora Web com foco em Backend, apaixonada por criar sistemas robustos, APIs elegantes e soluções que realmente importam. Trabalho com Python e Django no coração de tudo.</p>
+      <p>Quando não estou debugando, estou ouvindo R&B ou explorando novas tecnologias. Acredito que bom código, como boa música, tem ritmo e intenção.</p>
+      <div class="about-stats">
+        <div class="stat-card">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Anos de experiência</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">20+</div>
+          <div class="stat-label">Projetos entregues</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">8+</div>
+          <div class="stat-label">Tecnologias</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Cafés por semana</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual reveal">
+      <div class="vinyl-rings"></div>
+      <div class="vinyl-rings"></div>
+      <div class="vinyl-rings"></div>
+      <div class="vinyl-deco"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TECH STACK ===================== -->
+<section id="stack">
+  <div class="stack-header reveal">
+    <div class="section-label">// tecnologias</div>
+    <h2 class="section-title">Minha <em>Stack</em></h2>
+  </div>
+
+  <div class="tech-grid">
+    <div class="tech-card tc-django reveal" style="--level:90%">
+      <span class="tech-icon">🐍</span>
+      <div class="tech-name">Django</div>
+      <div class="tech-type">Web Framework</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--mint),var(--sky))"></div></div>
+    </div>
+    <div class="tech-card tc-python reveal" style="--level:92%">
+      <span class="tech-icon">🐍</span>
+      <div class="tech-name">Python</div>
+      <div class="tech-type">Backend Language</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--yellow),var(--orange))"></div></div>
+    </div>
+    <div class="tech-card tc-angular reveal" style="--level:78%">
+      <span class="tech-icon">🅰️</span>
+      <div class="tech-name">Angular</div>
+      <div class="tech-type">Frontend Framework</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--coral),var(--plum))"></div></div>
+    </div>
+    <div class="tech-card tc-js reveal" style="--level:85%">
+      <span class="tech-icon">⚡</span>
+      <div class="tech-name">JavaScript</div>
+      <div class="tech-type">Web Language</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--yellow),#e8a000)"></div></div>
+    </div>
+    <div class="tech-card tc-ts reveal" style="--level:75%">
+      <span class="tech-icon">📘</span>
+      <div class="tech-name">TypeScript</div>
+      <div class="tech-type">Typed JavaScript</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--sky),#0a6a8a)"></div></div>
+    </div>
+    <div class="tech-card tc-rest reveal" style="--level:88%">
+      <span class="tech-icon">🔌</span>
+      <div class="tech-name">REST API</div>
+      <div class="tech-type">DRF · FastAPI</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--mint),var(--sky))"></div></div>
+    </div>
+    <div class="tech-card tc-git reveal" style="--level:87%">
+      <span class="tech-icon">🌿</span>
+      <div class="tech-name">Git / GitHub</div>
+      <div class="tech-type">Version Control</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--coral),var(--orange))"></div></div>
+    </div>
+    <div class="tech-card tc-docker reveal" style="--level:72%">
+      <span class="tech-icon">🐳</span>
+      <div class="tech-name">Docker</div>
+      <div class="tech-type">Containerization</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--sky),var(--mint))"></div></div>
+    </div>
+    <div class="tech-card tc-pg reveal" style="--level:80%">
+      <span class="tech-icon">🗄️</span>
+      <div class="tech-name">PostgreSQL</div>
+      <div class="tech-type">Database</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,#336791,var(--sky))"></div></div>
+    </div>
+    <div class="tech-card tc-linux reveal" style="--level:82%">
+      <span class="tech-icon">🐧</span>
+      <div class="tech-name">Linux / Shell</div>
+      <div class="tech-type">OS · DevOps</div>
+      <div class="tech-bar"><div class="tech-bar-fill" style="background:linear-gradient(90deg,var(--yellow),var(--coral))"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MUSIC ===================== -->
+<section id="music">
+  <div class="music-bg"></div>
+  <div class="music-header reveal">
+    <div class="section-label">// playlist favorita</div>
+    <h2 class="section-title">Música que <em style="font-family:'Familjen Grotesk',sans-serif;font-style:italic;font-size:0.6em;vertical-align:middle">inspira</em></h2>
+    <p>Clique para tocar — o vinil sai da capa ♪</p>
+  </div>
+
+  <div class="album-list reveal">
+
+    <!-- Row 1 -->
+    <div class="album-row" id="ar-0" onclick="playSong(0)">
+      <div class="album-vinyl-wrap">
+        <div class="album-disc"><div class="album-disc-inner"></div></div>
+        <div class="album-cover-sq">
+          <div class="cover-art" style="background:linear-gradient(145deg,#1a1a2e,#3a1f5c,#7b2d8b)">
+            NO SCRUBS<br>TLC
+          </div>
+        </div>
+      </div>
+      <div class="album-info">
+        <div class="album-title">No Scrubs</div>
+        <div class="album-artist">TLC</div>
+        <div class="album-genre">R&B · 1999</div>
+      </div>
+      <div class="album-right">
+        <div class="album-waveform">
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div>
+        </div>
+        <div class="album-num">01</div>
+        <div class="play-icon">▶</div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="album-row" id="ar-1" onclick="playSong(1)">
+      <div class="album-vinyl-wrap">
+        <div class="album-disc"><div class="album-disc-inner"></div></div>
+        <div class="album-cover-sq">
+          <div class="cover-art" style="background:linear-gradient(145deg,#2d0a0a,#7a1f1f,#c43030)">
+            CRAZY IN LOVE<br>BEYONCÉ
+          </div>
+        </div>
+      </div>
+      <div class="album-info">
+        <div class="album-title">Crazy in Love</div>
+        <div class="album-artist">Beyoncé</div>
+        <div class="album-genre">R&B · Soul · 2003</div>
+      </div>
+      <div class="album-right">
+        <div class="album-waveform">
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div>
+        </div>
+        <div class="album-num">02</div>
+        <div class="play-icon">▶</div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="album-row" id="ar-2" onclick="playSong(2)">
+      <div class="album-vinyl-wrap">
+        <div class="album-disc"><div class="album-disc-inner"></div></div>
+        <div class="album-cover-sq">
+          <div class="cover-art" style="background:linear-gradient(145deg,#0a1a2a,#0d4a3a,#1a8060)">
+            FEELING GOOD<br>NINA SIMONE
+          </div>
+        </div>
+      </div>
+      <div class="album-info">
+        <div class="album-title">Feeling Good</div>
+        <div class="album-artist">Nina Simone</div>
+        <div class="album-genre">Jazz · Soul · 1965</div>
+      </div>
+      <div class="album-right">
+        <div class="album-waveform">
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div>
+        </div>
+        <div class="album-num">03</div>
+        <div class="play-icon">▶</div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="album-row" id="ar-3" onclick="playSong(3)">
+      <div class="album-vinyl-wrap">
+        <div class="album-disc"><div class="album-disc-inner"></div></div>
+        <div class="album-cover-sq">
+          <div class="cover-art" style="background:linear-gradient(145deg,#1a120a,#5a3a10,#c47a20)">
+            GOLDEN<br>JILL SCOTT
+          </div>
+        </div>
+      </div>
+      <div class="album-info">
+        <div class="album-title">Golden</div>
+        <div class="album-artist">Jill Scott</div>
+        <div class="album-genre">Neo-Soul · 2004</div>
+      </div>
+      <div class="album-right">
+        <div class="album-waveform">
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div>
+        </div>
+        <div class="album-num">04</div>
+        <div class="play-icon">▶</div>
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="album-row" id="ar-4" onclick="playSong(4)">
+      <div class="album-vinyl-wrap">
+        <div class="album-disc"><div class="album-disc-inner"></div></div>
+        <div class="album-cover-sq">
+          <div class="cover-art" style="background:linear-gradient(145deg,#0f0f1a,#1a1040,#3a2080)">
+            REDBONE<br>CHILDISH GAMBINO
+          </div>
+        </div>
+      </div>
+      <div class="album-info">
+        <div class="album-title">Redbone</div>
+        <div class="album-artist">Childish Gambino</div>
+        <div class="album-genre">Funk · Soul · 2016</div>
+      </div>
+      <div class="album-right">
+        <div class="album-waveform">
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div><div class="aw-bar"></div>
+          <div class="aw-bar"></div>
+        </div>
+        <div class="album-num">05</div>
+        <div class="play-icon">▶</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== PROJECTS ===================== -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <div class="section-label">// projetos</div>
+    <h2 class="section-title">O que eu<br><em>construo</em></h2>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card proj-1 reveal">
+      <span class="proj-icon">🧠</span>
+      <div class="proj-title">API de Gestão Escolar</div>
+      <p class="proj-desc">Sistema completo com Django REST Framework para gerenciamento de alunos, turmas e notas. Autenticação JWT, documentação Swagger e testes automatizados.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Django</span>
+        <span class="proj-tag">DRF</span>
+        <span class="proj-tag">PostgreSQL</span>
+        <span class="proj-tag">JWT</span>
+      </div>
+    </div>
+    <div class="project-card proj-2 reveal">
+      <span class="proj-icon">💻</span>
+      <div class="proj-title">Dashboard Angular + Python</div>
+      <p class="proj-desc">Painel administrativo fullstack com Angular no front e Django no back. Gráficos em tempo real, filtros dinâmicos e exportação de relatórios em PDF.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Angular</span>
+        <span class="proj-tag">TypeScript</span>
+        <span class="proj-tag">Django</span>
+        <span class="proj-tag">Chart.js</span>
+      </div>
+    </div>
+    <div class="project-card proj-3 reveal">
+      <span class="proj-icon">🛒</span>
+      <div class="proj-title">E-commerce Backend</div>
+      <p class="proj-desc">API RESTful para plataforma de e-commerce com carrinho, pagamento via Stripe, controle de estoque e sistema de cupons. Deploy com Docker.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Python</span>
+        <span class="proj-tag">Stripe</span>
+        <span class="proj-tag">Docker</span>
+        <span class="proj-tag">Redis</span>
+      </div>
+    </div>
+    <div class="project-card proj-4 reveal">
+      <span class="proj-icon">🤖</span>
+      <div class="proj-title">Bot de Automação</div>
+      <p class="proj-desc">Bot em Python para automação de tarefas repetitivas e scraping de dados. Integração com APIs externas, agendamento com Celery e logs estruturados.</p>
+      <div class="proj-tags">
+        <span class="proj-tag">Python</span>
+        <span class="proj-tag">Celery</span>
+        <span class="proj-tag">Selenium</span>
+        <span class="proj-tag">Linux</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-inner reveal">
+    <div class="section-label">// contato</div>
+    <h2 class="contact-big">Vamos<br><em>trabalhar</em><br>juntos?</h2>
+    <p class="contact-sub">Estou aberta a novos projetos, freelances e oportunidades. Me manda uma mensagem!</p>
+    <div class="contact-links">
+      <a href="https://github.com" class="contact-link cl-github" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com" class="contact-link cl-linkedin" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:anajulia@email.com" class="contact-link cl-email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Email
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Ana Julia Vieira Pereira Andrade da Costa</p>
+  <p>Feito com <span class="footer-heart">♥</span> & Python</p>
+</footer>
+
+<script>
+// ===== CURSOR =====
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 6 + 'px';
+  cursor.style.top  = my - 6 + 'px';
+});
+function animRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.left = rx - 18 + 'px';
+  ring.style.top  = ry - 18 + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+// ===== AUDIO ENGINE =====
+let audioCtx = null;
+let currentSource = null;
+let currentGain   = null;
+let currentCardIdx = -1;
+
+const songs = [
+  { title: 'No Scrubs', artist: 'TLC', freq: [220, 294, 330, 294, 220, 247, 294] },
+  { title: 'Crazy in Love', artist: 'Beyoncé', freq: [330, 440, 523, 440, 330, 392, 440] },
+  { title: 'Feeling Good', artist: 'Nina Simone', freq: [196, 247, 330, 392, 330, 247, 220] },
+  { title: 'Golden', artist: 'Jill Scott', freq: [262, 330, 392, 349, 330, 294, 262] },
+  { title: 'Redbone', artist: 'Childish Gambino', freq: [174, 220, 261, 294, 261, 220, 196] },
+];
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function createMelody(song) {
+  const ctx = getAudioCtx();
+  const gain = ctx.createGain();
+  const compressor = ctx.createDynamicsCompressor();
+  const reverb = ctx.createConvolver();
+
+  // Simple reverb impulse
+  const rate = ctx.sampleRate;
+  const length = rate * 2;
+  const impulse = ctx.createBuffer(2, length, rate);
+  for (let ch = 0; ch < 2; ch++) {
+    const d = impulse.getChannelData(ch);
+    for (let i = 0; i < length; i++) d[i] = (Math.random()*2-1) * Math.pow(1-i/length, 2);
+  }
+  reverb.buffer = impulse;
+
+  const reverbGain = ctx.createGain();
+  reverbGain.gain.value = 0.25;
+
+  gain.connect(compressor);
+  compressor.connect(ctx.destination);
+  gain.connect(reverb);
+  reverb.connect(reverbGain);
+  reverbGain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.6, ctx.currentTime + 0.3);
+
+  const notes = song.freq;
+  const bpm = 92;
+  const beat = 60 / bpm;
+  let t = ctx.currentTime;
+  const sources = [];
+
+  function scheduleLoop() {
+    notes.forEach((freq, i) => {
+      // Bass
+      const osc = ctx.createOscillator();
+      const ogain = ctx.createGain();
+      osc.type = i % 2 === 0 ? 'sine' : 'triangle';
+      osc.frequency.value = freq / 2;
+      ogain.gain.setValueAtTime(0, t + i * beat);
+      ogain.gain.linearRampToValueAtTime(0.5, t + i * beat + 0.02);
+      ogain.gain.linearRampToValueAtTime(0, t + i * beat + beat * 0.7);
+      osc.connect(ogain); ogain.connect(gain);
+      osc.start(t + i * beat); osc.stop(t + i * beat + beat);
+      sources.push(osc);
+
+      // Melody
+      const osc2 = ctx.createOscillator();
+      const og2 = ctx.createGain();
+      osc2.type = 'sawtooth';
+      osc2.frequency.value = freq;
+      og2.gain.setValueAtTime(0, t + i * beat + beat * 0.1);
+      og2.gain.linearRampToValueAtTime(0.2, t + i * beat + beat * 0.15);
+      og2.gain.linearRampToValueAtTime(0, t + i * beat + beat * 0.8);
+      osc2.connect(og2); og2.connect(gain);
+      osc2.start(t + i * beat + beat * 0.1); osc2.stop(t + i * beat + beat);
+      sources.push(osc2);
+
+      // Hi-hat
+      if (i % 2 === 0) {
+        const buf = ctx.createBuffer(1, ctx.sampleRate * 0.05, ctx.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let j = 0; j < d.length; j++) d[j] = (Math.random()*2-1) * (1 - j/d.length);
+        const hn = ctx.createBufferSource();
+        const hg = ctx.createGain();
+        hn.buffer = buf; hg.gain.value = 0.15;
+        hn.connect(hg); hg.connect(gain);
+        hn.start(t + i * beat);
+        sources.push(hn);
+      }
+    });
+    t += notes.length * beat;
+  }
+
+  // Loop 16 times
+  for (let loop = 0; loop < 16; loop++) scheduleLoop();
+  return { gain, sources };
+}
+
+function stopCurrent(fade = true) {
+  if (currentGain) {
+    if (fade) {
+      currentGain.gain.linearRampToValueAtTime(0, getAudioCtx().currentTime + 0.4);
+    }
+    setTimeout(() => {
+      try { if (currentSource) currentSource.forEach(s => { try { s.stop(); } catch(e){} }); } catch(e){}
+    }, 500);
+  }
+  currentGain = null; currentSource = null;
+}
+
+function playSong(idx) {
+  const wasPlaying = currentCardIdx === idx;
+
+  document.querySelectorAll('.album-row').forEach(c => c.classList.remove('active'));
+  stopCurrent();
+  hideNowPlaying();
+
+  if (wasPlaying) {
+    currentCardIdx = -1;
+    hideAudioBars();
+    return;
+  }
+
+  currentCardIdx = idx;
+  const row = document.getElementById('ar-' + idx);
+  row.classList.add('active');
+
+  const result = createMelody(songs[idx]);
+  currentGain = result.gain;
+  currentSource = result.sources;
+
+  showNowPlaying(songs[idx]);
+  showAudioBars();
+}
+
+// Now Playing
+const npEl = document.getElementById('nowPlaying');
+const npTitle = document.getElementById('npTitle');
+document.getElementById('npStop').addEventListener('click', () => {
+  document.querySelectorAll('.album-row').forEach(c => c.classList.remove('active'));
+  stopCurrent();
+  hideNowPlaying();
+  hideAudioBars();
+  currentCardIdx = -1;
+});
+function showNowPlaying(song) {
+  npTitle.textContent = song.title + ' — ' + song.artist;
+  npEl.classList.add('visible');
+}
+function hideNowPlaying() { npEl.classList.remove('visible'); }
+
+// Audio bars
+const barsEl = document.getElementById('audioBars');
+for (let i = 0; i < 60; i++) {
+  const b = document.createElement('div');
+  b.className = 'abbar';
+  const h = Math.random() * 60 + 10;
+  b.style.setProperty('--h', h + 'px');
+  b.style.animationDelay = (Math.random() * 0.8) + 's';
+  b.style.animationDuration = (0.4 + Math.random() * 0.8) + 's';
+  barsEl.appendChild(b);
+}
+function showAudioBars() { barsEl.classList.add('active'); }
+function hideAudioBars() { barsEl.classList.remove('active'); }
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate tech bars
+      const bar = e.target.querySelector('.tech-bar-fill');
+      if (bar) e.target.classList.add('animated');
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(el => observer.observe(el));
+
+// Animate tech cards individually
+document.querySelectorAll('.tech-card').forEach((card, i) => {
+  card.style.animationDelay = i * 0.08 + 's';
+  observer.observe(card);
+});
+</script>
+</body>
+</html>
