@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-mode="criativo">
+<html lang="pt-BR" data-mode="profissional">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -1313,10 +1313,10 @@ function comicActive(on){
 }
 
 /* ---------- troca de modo ---------- */
-let mode='criativo';
+let mode='profissional';
 function setMode(m){
   mode=m;root.dataset.mode=m;closeModal();pmClose();if(m!=="criativo")sndSet(false);if(m==="profissional"&&window.rvCheck)setTimeout(rvCheck,80);
-  try{localStorage.setItem('ajc-mode-v7',m)}catch(e){}
+  try{localStorage.setItem('ajc-mode-v8',m)}catch(e){}
   if(m==='criativo'){buildComic();comicActive(true)}else comicActive(false);
   scrollTo(0,0);sizeHS();
   if(m==='criativo'&&window.ScrollTrigger)ScrollTrigger.refresh();
@@ -1400,7 +1400,7 @@ const tt=document.getElementById('totop');
 addEventListener('scroll',()=>tt.classList.toggle('on',scrollY>innerHeight*.9),{passive:true});
 tt.addEventListener('click',()=>{try{scrollTo({top:0,behavior:reduce?'auto':'smooth'})}catch(e){scrollTo(0,0)}});
 /* ---------- início ---------- */
-let start='criativo';try{start=localStorage.getItem('ajc-mode-v7')||start}catch(e){}
+let start='profissional';try{start=localStorage.getItem('ajc-mode-v8')||start}catch(e){}
 const qm=new URLSearchParams(location.search).get('modo');if(qm==='profissional'||qm==='criativo')start=qm;
 mode=start;root.dataset.mode=start;resize();
 const pre=$('#pre');
